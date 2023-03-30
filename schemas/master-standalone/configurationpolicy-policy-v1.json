@@ -1,0 +1,493 @@
+{
+  "description": "ConfigurationPolicy is the Schema for the configurationpolicies API",
+  "type": "object",
+  "properties": {
+    "apiVersion": {
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "policy.open-cluster-management.io/v1"
+      ]
+    },
+    "kind": {
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "ConfigurationPolicy"
+      ]
+    },
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+    },
+    "spec": {
+      "description": "ConfigurationPolicySpec defines the desired state of ConfigurationPolicy",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "evaluationInterval": {
+          "description": "Configures the minimum elapsed time before a ConfigurationPolicy is reevaluated",
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "compliant": {
+              "description": "The minimum elapsed time before a ConfigurationPolicy is reevaluated when in the compliant state. Set this to \"never\" to disable reevaluation when in the compliant state.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^(?:(?:(?:[0-9]+(?:.[0-9])?)(?:h|m|s|(?:ms)|(?:us)|(?:ns)))|never)+$"
+            },
+            "noncompliant": {
+              "description": "The minimum elapsed time before a ConfigurationPolicy is reevaluated when in the noncompliant state. Set this to \"never\" to disable reevaluation when in the noncompliant state.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^(?:(?:(?:[0-9]+(?:.[0-9])?)(?:h|m|s|(?:ms)|(?:us)|(?:ns)))|never)+$"
+            }
+          },
+          "additionalProperties": false
+        },
+        "namespaceSelector": {
+          "description": "'namespaceSelector' defines the list of namespaces to include/exclude for objects defined in spec.objectTemplates. All selector rules are ANDed. If 'include' is not provided but 'matchLabels' and/or 'matchExpressions' are, 'include' will behave as if ['*'] were given. If 'matchExpressions' and 'matchLabels' are both not provided, 'include' must be provided to retrieve namespaces.",
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "exclude": {
+              "description": "'exclude' is an array of filepath expressions to exclude objects by name.",
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1
+              }
+            },
+            "include": {
+              "description": "'include' is an array of filepath expressions to include objects by name.",
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1
+              }
+            },
+            "matchExpressions": {
+              "description": "'matchExpressions' is an array of label selector requirements matching objects by label.",
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "description": "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.",
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "required": [
+                  "key",
+                  "operator"
+                ],
+                "properties": {
+                  "key": {
+                    "description": "key is the label key that the selector applies to.",
+                    "type": "string"
+                  },
+                  "operator": {
+                    "description": "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.",
+                    "type": "string"
+                  },
+                  "values": {
+                    "description": "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch.",
+                    "type": [
+                      "array",
+                      "null"
+                    ],
+                    "items": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "matchLabels": {
+              "description": "'matchLabels' is a map of {key,value} pairs matching objects by label.",
+              "type": [
+                "object",
+                "null"
+              ],
+              "additionalProperties": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "object-templates": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "description": "ObjectTemplate describes how an object should look",
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "complianceType"
+            ],
+            "properties": {
+              "complianceType": {
+                "description": "ComplianceType specifies whether it is: musthave, mustnothave, mustonlyhave",
+                "type": "string",
+                "enum": [
+                  "MustHave",
+                  "Musthave",
+                  "musthave",
+                  "MustOnlyHave",
+                  "Mustonlyhave",
+                  "mustonlyhave",
+                  "MustNotHave",
+                  "Mustnothave",
+                  "mustnothave"
+                ]
+              },
+              "metadataComplianceType": {
+                "description": "MetadataComplianceType describes how to check compliance for the labels/annotations of a given object",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "MustHave",
+                  "Musthave",
+                  "musthave",
+                  "MustOnlyHave",
+                  "Mustonlyhave",
+                  "mustonlyhave"
+                ]
+              },
+              "objectDefinition": {
+                "description": "ObjectDefinition defines required fields for the object",
+                "x-kubernetes-preserve-unknown-fields": true
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "pruneObjectBehavior": {
+          "description": "PruneObjectBehavior : DeleteAll, DeleteIfCreated, or None",
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "DeleteAll",
+            "DeleteIfCreated",
+            "None"
+          ]
+        },
+        "remediationAction": {
+          "description": "RemediationAction : enforce or inform",
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "Inform",
+            "inform",
+            "Enforce",
+            "enforce"
+          ]
+        },
+        "severity": {
+          "description": "Severity : low, medium, high, or critical",
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "low",
+            "Low",
+            "medium",
+            "Medium",
+            "high",
+            "High",
+            "critical",
+            "Critical"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "status": {
+      "description": "ConfigurationPolicyStatus defines the observed state of ConfigurationPolicy",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "compliancyDetails": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "description": "TemplateStatus hold the status result",
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "Compliant": {
+                "description": "ComplianceState shows the state of enforcement",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "Validity": {
+                "description": "Validity describes if it is valid or not",
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "reason": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "valid": {
+                    "type": [
+                      "boolean",
+                      "null"
+                    ]
+                  }
+                },
+                "additionalProperties": false
+              },
+              "conditions": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "description": "Condition is the base struct for representing resource conditions",
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "required": [
+                    "type"
+                  ],
+                  "properties": {
+                    "lastTransitionTime": {
+                      "description": "The last time the condition transitioned from one status to another.",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "date-time"
+                    },
+                    "message": {
+                      "description": "A human readable message indicating details about the transition.",
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "reason": {
+                      "description": "The reason for the condition's last transition.",
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "status": {
+                      "description": "Status of the condition, one of True, False, Unknown.",
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "type": {
+                      "description": "Type of condition, e.g Complete or Failed.",
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "compliant": {
+          "description": "ComplianceState shows the state of enforcement",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lastEvaluated": {
+          "description": "An ISO-8601 timestamp of the last time the policy was evaluated",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lastEvaluatedGeneration": {
+          "description": "The generation of the ConfigurationPolicy object when it was last evaluated",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "int64"
+        },
+        "relatedObjects": {
+          "description": "List of resources processed by the policy",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "description": "RelatedObject is the list of objects matched by this Policy resource.",
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "compliant": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "object": {
+                "description": "ObjectResource is an object identified by the policy as a resource that needs to be validated.",
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "apiVersion": {
+                    "description": "API version of the referent.",
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "kind": {
+                    "description": "Kind of the referent. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "metadata": {
+                    "description": "Metadata values from the referent.",
+                    "type": [
+                      "object",
+                      "null"
+                    ],
+                    "properties": {
+                      "name": {
+                        "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names",
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "namespace": {
+                        "description": "Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/",
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": false
+              },
+              "properties": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "createdByPolicy": {
+                    "description": "Whether the object was created by the parent policy",
+                    "type": [
+                      "boolean",
+                      "null"
+                    ]
+                  },
+                  "uid": {
+                    "description": "Store object UID to help track object ownership for deletion",
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "additionalProperties": false
+              },
+              "reason": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "additionalProperties": false
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "x-kubernetes-group-version-kind": [
+    {
+      "group": "policy.open-cluster-management.io",
+      "kind": "ConfigurationPolicy",
+      "version": "v1"
+    }
+  ],
+  "additionalProperties": false,
+  "$schema": "http://json-schema.org/schema#"
+}

@@ -1,0 +1,199 @@
+{
+  "description": "IamPolicy is the Schema for the iampolicies API",
+  "type": "object",
+  "properties": {
+    "apiVersion": {
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "policy.open-cluster-management.io/v1"
+      ]
+    },
+    "kind": {
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "IamPolicy"
+      ]
+    },
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+    },
+    "spec": {
+      "description": "IamPolicySpec defines the desired state of IamPolicy",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "clusterRole": {
+          "description": "Name of the cluster role referenced by the cluster role bindings, defaults to \"cluster-admin\" if none specified",
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "ignoreClusterRoleBindings": {
+          "description": "A list of regex values signifying which cluster role binding names to ignore. By default, all cluster role bindings that have a name which starts with system: will be ignored. It is recommended to set this to a stricter value.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          }
+        },
+        "labelSelector": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "maxClusterRoleBindingUsers": {
+          "description": "Maximum number of cluster role binding users still valid before it is considered non-compliant",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "namespaceSelector": {
+          "description": "Selecting a list of namespaces where the policy applies. This field is obsolete and does not do anything.",
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "exclude": {
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1
+              }
+            },
+            "include": {
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "remediationAction": {
+          "description": "Only Inform is currently supported. Setting this to Enforce will have the same effect as Inform.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "Inform",
+            "inform",
+            "Enforce",
+            "enforce"
+          ]
+        },
+        "severity": {
+          "description": "low, medium, high, or critical",
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "low",
+            "Low",
+            "medium",
+            "Medium",
+            "high",
+            "High",
+            "critical",
+            "Critical"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "status": {
+      "description": "IamPolicyStatus defines the observed state of IamPolicy",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "compliancyDetails": {
+          "description": "reason for non-compliancy",
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": {
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "compliant": {
+          "description": "Compliant, NonCompliant, UnknownCompliancy",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "x-kubernetes-group-version-kind": [
+    {
+      "group": "policy.open-cluster-management.io",
+      "kind": "IamPolicy",
+      "version": "v1"
+    }
+  ],
+  "additionalProperties": false,
+  "$schema": "http://json-schema.org/schema#"
+}
