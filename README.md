@@ -2,14 +2,14 @@
 
 1. Ensure you are authenticated to Kubernetes.
 
-2. Install requirements:
+2. Update the extracted schemas:
 
     ```
-    pipenv install
+    python extract-schemas.py -o schema.json
     ```
 
-2. Run the extraction script:
+3. Commit your changes:
 
     ```
-    pipenv run bash extract-schemas.sh
+    git commit -m 'Updated schema repository'
     ```
